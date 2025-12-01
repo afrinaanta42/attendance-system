@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-          Schema::create('classes', function (Blueprint $table) {
-        $table->id();
-        $table->string('class_name'); // e.g., "Class 10", "BSc 1st Year"
-        $table->string('section')->nullable();
-        $table->string('subject')->nullable();
-        $table->timestamps();
-    });
+        Schema::create('classes', function (Blueprint $table) {
+            $table->id();
+            $table->string('class_name'); // e.g., "Class 10", "BSc 1st Year"
+            $table->string('section')->nullable();
+            $table->string('subject')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

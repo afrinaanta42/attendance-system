@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('students', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-        $table->string('roll_number')->unique();
-        $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
-        $table->date('dob')->nullable();
-        $table->string('gender')->nullable();
-        $table->timestamps();
-    });
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('roll_number')->unique();
+            $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
+            $table->date('dob')->nullable();
+            $table->string('gender')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

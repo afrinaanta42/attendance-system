@@ -32,20 +32,42 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-public function roles()
-{
-    return $this->belongsToMany(Role::class);
-}
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class);
+    // }
 
-public function student()
-{
-    return $this->hasOne(Student::class);
-}
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
 
-public function teacher()
-{
-    return $this->hasOne(Teacher::class);
-}
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole('Admin');
+    }
+    public function isTeacher()
+    {
+        return $this->hasRole('Teacher');
+    }
+    public function isStudent()
+    {
+        return $this->hasRole('Student');
+    }
 
     /**
      * Get the attributes that should be cast.
