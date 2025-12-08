@@ -2,18 +2,39 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
-  public function run()
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
   {
-    DB::table('roles')->insert([
-      ['name' => 'Admin', 'description' => 'System administrator'],
-      ['name' => 'Teacher', 'description' => 'Handles attendance'],
-      ['name' => 'Student', 'description' => 'Can view attendance'],
-    ]);
+    // Create default roles
+    $roles = [
+      [
+        'name' => 'Admin',
+        'description' => 'System Administrator with full access',
+      ],
+      [
+        'name' => 'Teacher',
+        'description' => 'Teacher role for managing classes and attendance',
+      ],
+      [
+        'name' => 'Student',
+        'description' => 'Student role for viewing attendance',
+      ],
+    ];
+
+    foreach ($roles as $role) {
+      Role::firstOrCreate(
+        ['name' => $role['name']],
+        $role
+      );
+    }
+
+    $this->command->info('Roles seeded successfully!');
   }
 }
