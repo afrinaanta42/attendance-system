@@ -11,8 +11,16 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                'attendance-green': '#10b981',
+                'attendance-blue': '#3b82f6',
+                'attendance-red': '#ef4444',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"DM Sans"', ...defaultTheme.fontFamily.sans],
+                inter: ["Inter", ...defaultTheme.fontFamily.sans],
+                cambay: ["Cambay", ...defaultTheme.fontFamily.sans],
+                quantico: ["Quantico", ...defaultTheme.fontFamily.sans],
             },
         },
     },
