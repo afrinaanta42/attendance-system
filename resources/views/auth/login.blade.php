@@ -1,6 +1,7 @@
 <x-guest-layout>
     <div class="mb-8 text-center">
-        <h2 class="text-2xl font-bold text-gray-900">Welcome back</h2>
+        <h2 class="text-2xl font-bold text-gray-900" title="Student Attendance Management System">Welcome back to SAMS
+        </h2>
         <p class="mt-2 text-sm text-gray-600">
             Sign in to your account to continue
         </p>
@@ -51,7 +52,7 @@
             </label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                 autocomplete="email"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors @error('email') border-red-300 @enderror">
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors @error('email') border-red-300 @enderror">
             @error('email')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -65,13 +66,13 @@
                 </label>
                 @if (Route::has('password.request'))
                     <a href="{{ route('password.request') }}"
-                        class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                        class="text-sm font-medium text-primary hover:text-accent transition-colors">
                         Forgot password?
                     </a>
                 @endif
             </div>
             <input id="password" type="password" name="password" required autocomplete="current-password"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors @error('password') border-red-300 @enderror">
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors @error('password') border-red-300 @enderror">
             @error('password')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -81,7 +82,7 @@
         <div class="mb-6">
             <label class="inline-flex items-center">
                 <input type="checkbox" name="remember"
-                    class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                    class="rounded border-gray-300 text-primary shadow-sm focus:ring-primary">
                 <span class="ml-2 text-sm text-gray-700">Remember me</span>
             </label>
         </div>
@@ -89,7 +90,7 @@
         <!-- Submit Button -->
         <div class="mb-6">
             <button type="submit"
-                class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary/90 text-white font-medium rounded-lg hover:from-primary/90 hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300">
                 Sign In
             </button>
         </div>
@@ -98,8 +99,7 @@
         <div class="text-center">
             <p class="text-sm text-gray-600">
                 Don't have an account?
-                <a href="{{ route('register') }}"
-                    class="font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                <a href="{{ route('register') }}" class="font-medium text-primary hover:text-accent transition-colors">
                     Create one now
                 </a>
             </p>
@@ -108,12 +108,11 @@
 
     <!-- Role Information -->
     <div class="mt-8 pt-6 border-t border-gray-200">
-        <div class="bg-blue-50 p-4 rounded-lg">
-            <h4 class="text-sm font-medium text-blue-800 mb-2">Login Information</h4>
-            <ul class="text-xs text-blue-700 space-y-1">
+        <div class="bg-primary/5 p-4 rounded-lg border border-primary/10">
+            <h4 class="text-sm font-medium text-primary mb-2">Login Information</h4>
+            <ul class="text-xs text-primary space-y-1">
                 <li class="flex items-start">
-                    <svg class="w-3 h-3 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor"
-                        viewBox="0 0 20 20">
+                    <svg class="w-3 h-3 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                             clip-rule="evenodd" />
@@ -121,8 +120,7 @@
                     <span><strong>Admin:</strong> Full system access</span>
                 </li>
                 <li class="flex items-start">
-                    <svg class="w-3 h-3 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor"
-                        viewBox="0 0 20 20">
+                    <svg class="w-3 h-3 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                             clip-rule="evenodd" />
@@ -130,8 +128,7 @@
                     <span><strong>Teacher:</strong> Mark attendance, view reports</span>
                 </li>
                 <li class="flex items-start">
-                    <svg class="w-3 h-3 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor"
-                        viewBox="0 0 20 20">
+                    <svg class="w-3 h-3 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                             clip-rule="evenodd" />

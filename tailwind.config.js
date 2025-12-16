@@ -12,6 +12,8 @@ export default {
     theme: {
         extend: {
             colors: {
+                primary: "#ea2f30",
+                accent: "#b16130",
                 'attendance-green': '#10b981',
                 'attendance-blue': '#3b82f6',
                 'attendance-red': '#ef4444',

@@ -5,11 +5,11 @@
 @section('content')
     <div class="space-y-6">
         <!-- Welcome Card -->
-        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+        <div class="bg-gradient-to-r from-primary to-primary/90 rounded-xl p-6 text-white shadow-lg">
             <div class="flex flex-col md:flex-row md:items-center justify-between">
                 <div>
                     <h1 class="text-2xl font-bold mb-2">Welcome back, {{ auth()->user()->name }}!</h1>
-                    <p class="text-blue-100">
+                    <p class="text-white/80">
                         @if (auth()->user()->isAdmin())
                             You have full administrative control over the attendance system.
                         @elseif(auth()->user()->isTeacher())
@@ -20,7 +20,7 @@
                     </p>
                 </div>
                 <div class="mt-4 md:mt-0">
-                    <div class="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 rounded-lg">
+                    <div class="inline-flex items-center px-4 py-2 bg-white/20 rounded-lg">
                         <i class="fas fa-calendar-alt mr-2"></i>
                         <span>{{ now()->format('l, F j, Y') }}</span>
                     </div>
@@ -38,8 +38,8 @@
                             <p class="text-gray-500 text-sm font-medium">Total Students</p>
                             <p class="text-3xl font-bold text-gray-900 mt-2">{{ \App\Models\Student::count() }}</p>
                         </div>
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-user-graduate text-blue-600 text-xl"></i>
+                        <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-graduate text-primary text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -50,8 +50,8 @@
                             <p class="text-gray-500 text-sm font-medium">Total Teachers</p>
                             <p class="text-3xl font-bold text-gray-900 mt-2">{{ \App\Models\Teacher::count() }}</p>
                         </div>
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-user-tie text-green-600 text-xl"></i>
+                        <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user-tie text-accent text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -62,8 +62,8 @@
                             <p class="text-gray-500 text-sm font-medium">Total Classes</p>
                             <p class="text-3xl font-bold text-gray-900 mt-2">{{ \App\Models\ClassRoom::count() }}</p>
                         </div>
-                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-chalkboard-teacher text-purple-600 text-xl"></i>
+                        <div class="w-12 h-12 bg-attendance-blue/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chalkboard-teacher text-attendance-blue text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -75,8 +75,8 @@
                             <p class="text-3xl font-bold text-gray-900 mt-2">
                                 {{ \App\Models\Attendance::whereDate('date', today())->count() }}</p>
                         </div>
-                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-clipboard-check text-yellow-600 text-xl"></i>
+                        <div class="w-12 h-12 bg-attendance-green/10 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clipboard-check text-attendance-green text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -87,32 +87,35 @@
                 <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="{{ route('classes.create') }}"
-                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-plus text-blue-600"></i>
+                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-primary/30 transition-colors group">
+                        <div
+                            class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-primary/20">
+                            <i class="fas fa-plus text-primary"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">Add New Class</p>
+                            <p class="font-medium text-gray-900 group-hover:text-primary">Add New Class</p>
                             <p class="text-sm text-gray-500">Create a new class</p>
                         </div>
                     </a>
                     <a href="{{ route('teachers.create') }}"
-                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-plus text-green-600"></i>
+                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-accent/30 transition-colors group">
+                        <div
+                            class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-accent/20">
+                            <i class="fas fa-plus text-accent"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">Add Teacher</p>
+                            <p class="font-medium text-gray-900 group-hover:text-accent">Add Teacher</p>
                             <p class="text-sm text-gray-500">Register new teacher</p>
                         </div>
                     </a>
                     <a href="{{ route('attendance.report') }}"
-                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-chart-bar text-purple-600"></i>
+                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-attendance-blue/30 transition-colors group">
+                        <div
+                            class="w-10 h-10 bg-attendance-blue/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-attendance-blue/20">
+                            <i class="fas fa-chart-bar text-attendance-blue"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">View Reports</p>
+                            <p class="font-medium text-gray-900 group-hover:text-attendance-blue">View Reports</p>
                             <p class="text-sm text-gray-500">Attendance analytics</p>
                         </div>
                     </a>
@@ -135,8 +138,8 @@
                     @if ($class)
                         <div class="space-y-4">
                             <div class="flex items-center">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-chalkboard-teacher text-blue-600"></i>
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-chalkboard-teacher text-primary"></i>
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">{{ $class->class_name }}</p>
@@ -161,14 +164,15 @@
                 <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Today's Attendance</h2>
                     <div class="text-center py-8">
-                        <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
-                            <i class="fas fa-clipboard-check text-green-600 text-2xl"></i>
+                        <div
+                            class="inline-flex items-center justify-center w-20 h-20 bg-attendance-green/10 rounded-full mb-4">
+                            <i class="fas fa-clipboard-check text-attendance-green text-2xl"></i>
                         </div>
                         <p class="text-3xl font-bold text-gray-900">{{ $todayAttendance }}</p>
                         <p class="text-gray-500 mt-2">Students marked today</p>
                         @if ($todayAttendance == 0)
                             <a href="{{ route('attendance.index') }}"
-                                class="inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                class="inline-block mt-4 px-6 py-2 bg-gradient-to-r from-primary to-primary/90 text-white rounded-lg hover:from-primary/90 hover:to-primary transition">
                                 Mark Attendance
                             </a>
                         @endif
@@ -181,22 +185,24 @@
                 <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <a href="{{ route('attendance.index') }}"
-                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-calendar-check text-blue-600"></i>
+                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-primary/30 transition-colors group">
+                        <div
+                            class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-primary/20">
+                            <i class="fas fa-calendar-check text-primary"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">Mark Attendance</p>
+                            <p class="font-medium text-gray-900 group-hover:text-primary">Mark Attendance</p>
                             <p class="text-sm text-gray-500">Take today's attendance</p>
                         </div>
                     </a>
                     <a href="{{ route('attendance.report') }}"
-                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                            <i class="fas fa-chart-bar text-green-600"></i>
+                        class="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-attendance-green/30 transition-colors group">
+                        <div
+                            class="w-10 h-10 bg-attendance-green/10 rounded-lg flex items-center justify-center mr-4 group-hover:bg-attendance-green/20">
+                            <i class="fas fa-chart-bar text-attendance-green"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">View Reports</p>
+                            <p class="font-medium text-gray-900 group-hover:text-attendance-green">View Reports</p>
                             <p class="text-sm text-gray-500">Attendance analytics</p>
                         </div>
                     </a>
@@ -220,12 +226,12 @@
                             <div class="inline-flex items-center justify-center relative">
                                 <svg class="w-32 h-32" viewBox="0 0 36 36">
                                     <path d="M18 2.0845
-                                        a 15.9155 15.9155 0 0 1 0 31.831
-                                        a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E5E7EB"
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#E5E7EB"
                                         stroke-width="3" />
                                     <path d="M18 2.0845
-                                        a 15.9155 15.9155 0 0 1 0 31.831
-                                        a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831" fill="none"
                                         stroke="{{ $attendancePercentage >= 75 ? '#10B981' : '#EF4444' }}"
                                         stroke-width="3" stroke-dasharray="{{ $attendancePercentage }}, 100" />
                                     <text x="18" y="20.5" text-anchor="middle"
@@ -237,13 +243,15 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="text-center p-4 bg-blue-50 rounded-lg">
-                                <p class="text-2xl font-bold text-blue-700">{{ $presentCount }}</p>
-                                <p class="text-sm text-blue-600">Present</p>
+                            <div
+                                class="text-center p-4 bg-attendance-green/10 rounded-lg border border-attendance-green/20">
+                                <p class="text-2xl font-bold text-attendance-green">{{ $presentCount }}</p>
+                                <p class="text-sm text-attendance-green">Present</p>
                             </div>
-                            <div class="text-center p-4 bg-red-50 rounded-lg">
-                                <p class="text-2xl font-bold text-red-700">{{ $totalAttendance - $presentCount }}</p>
-                                <p class="text-sm text-red-600">Absent</p>
+                            <div class="text-center p-4 bg-attendance-red/10 rounded-lg border border-attendance-red/20">
+                                <p class="text-2xl font-bold text-attendance-red">{{ $totalAttendance - $presentCount }}
+                                </p>
+                                <p class="text-sm text-attendance-red">Absent</p>
                             </div>
                         </div>
                     </div>
@@ -255,8 +263,8 @@
                     <div class="space-y-4">
                         @if ($student)
                             <div class="flex items-center mb-6">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                                    <i class="fas fa-user-graduate text-blue-600"></i>
+                                <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-user-graduate text-primary"></i>
                                 </div>
                                 <div>
                                     <p class="font-medium text-gray-900">{{ auth()->user()->name }}</p>
@@ -265,7 +273,7 @@
                             </div>
 
                             @if ($student->class)
-                                <div class="p-4 bg-gray-50 rounded-lg">
+                                <div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
                                     <p class="text-sm font-medium text-gray-900">Class: {{ $student->class->class_name }}
                                     </p>
                                     @if ($student->class->section)
@@ -284,15 +292,17 @@
             <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-semibold text-gray-900">Recent Attendance</h2>
-                    <a href="{{ route('attendance.my') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                        View All <i class="fas fa-arrow-right ml-1"></i>
+                    <a href="{{ route('attendance.my') }}"
+                        class="text-primary hover:text-primary/80 text-sm font-medium group">
+                        View All <i class="fas fa-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
 
                 @if ($student && $student->attendances()->count() > 0)
                     <div class="space-y-3">
                         @foreach ($student->attendances()->latest()->take(5)->get() as $attendance)
-                            <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                            <div
+                                class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-primary/30 transition-colors">
                                 <div>
                                     <p class="font-medium text-gray-900">{{ $attendance->date->format('F j, Y') }}</p>
                                     <p class="text-sm text-gray-500">Class:
@@ -300,7 +310,7 @@
                                 </div>
                                 <span
                                     class="px-3 py-1 rounded-full text-sm font-medium 
-                                {{ $attendance->status == 'Present' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $attendance->status == 'Present' ? 'bg-attendance-green/10 text-attendance-green border border-attendance-green/20' : 'bg-attendance-red/10 text-attendance-red border border-attendance-red/20' }}">
                                     {{ $attendance->status }}
                                 </span>
                             </div>

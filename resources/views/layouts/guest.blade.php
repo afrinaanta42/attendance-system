@@ -38,16 +38,10 @@
         <div class="w-full sm:max-w-md md:max-w-lg mt-6 px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="text-center mb-6">
                 <div class="flex justify-center">
-                    <svg class="w-12 h-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-                    </svg>
+                    <img src="{{ asset('images/sams.png') }}" alt="Student Attendance Management System Icon"
+                        class="w-16 h-16">
                 </div>
-                <h2 class="mt-4 text-2xl font-bold text-gray-900">Attendance Management System</h2>
-                <p class="mt-2 text-sm text-gray-600">Track and manage student attendance efficiently</p>
             </div>
-
             {{ $slot }}
         </div>
 

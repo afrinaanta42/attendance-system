@@ -8,7 +8,9 @@
 
     <title>
         @hasSection('title')
-            @yield('title') - {{ config('app.name', ' - Attendance System') }}
+            @yield('title') - {{ config('app.name', 'SAMS') }}
+        @else
+            {{ config('app.name', 'Student Attendance Management System') }}
         @endif
     </title>
 
@@ -41,7 +43,7 @@
             <!-- Main Content -->
             <main class="flex-1 overflow-y-auto p-4 no-scrollbar">
                 <div class="max-w-8xl mx-auto">
-                
+
                     <!-- Flash Messages -->
                     @if (session('success'))
                         <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -61,6 +63,13 @@
                         </div>
                     @endif
 
+                    <!-- Page Header -->
+                    @hasSection('header')
+                        <div class="mb-6">
+                            @yield('header')
+                        </div>
+                    @endif
+
                     <!-- Content -->
                     @yield('content')
                 </div>
@@ -72,7 +81,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     @stack('scripts')
 </body>
 

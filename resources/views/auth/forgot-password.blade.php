@@ -1,14 +1,6 @@
 <x-guest-layout>
     <div class="mb-8 text-center">
-        <div
-            class="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-100 to-blue-200 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                </path>
-            </svg>
-        </div>
+
         <h2 class="text-2xl font-bold text-gray-900">Forgot your password?</h2>
         <p class="mt-2 text-sm text-gray-600">
             No problem. Just enter your email address and we'll send you a password reset link.
@@ -59,7 +51,7 @@
                 Email Address
             </label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors @error('email') border-red-300 @enderror">
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors @error('email') border-red-300 @enderror">
             @error('email')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -68,7 +60,7 @@
         <!-- Submit Button -->
         <div class="mb-6">
             <button type="submit"
-                class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300">
+                class="w-full py-3 px-4 bg-gradient-to-r from-primary to-primary/90 text-white font-medium rounded-lg hover:from-primary/90 hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300">
                 Email Password Reset Link
             </button>
         </div>
@@ -76,7 +68,7 @@
         <!-- Back to Login -->
         <div class="text-center">
             <a href="{{ route('login') }}"
-                class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                class="inline-flex items-center text-sm font-medium text-primary hover:text-accent transition-colors">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
