@@ -23,8 +23,8 @@ class StudentSeeder extends Seeder
         $students = [
             [
                 'name' => 'Alice Johnson',
-                'email' => 'student.alice@attendance.com',
-                'password' => Hash::make('student123'),
+                'email' => 'student@example.com',
+                'password' => Hash::make('password'),
                 'roll_number' => 'ROLL24001',
                 'class_id' => $classes->where('class_name', 'Class 10')->where('section', 'A')->first()->id,
                 'gender' => 'Female',

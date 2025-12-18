@@ -7,141 +7,127 @@ use App\Models\ClassRoom;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->isAdmin()) {
             $classes = ClassRoom::all();
+
+            // Get attendance records with filters
+            $query = Attendance::with(['student.user', 'teacher.user', 'classRoom'])
+                ->latest();
+
+            if ($request->has('class_id') && $request->class_id) {
+                $query->where('class_id', $request->class_id);
+            }
+
+            if ($request->has('date') && $request->date) {
+                $query->whereDate('date', $request->date);
+            }
+
+            if ($request->has('status') && $request->status) {
+                $query->where('status', $request->status);
+            }
+
+            $attendances = $query->paginate(20);
+
+            // Get stats for today
+            $todayStats = Attendance::selectRaw('
+            COUNT(*) as total,
+            SUM(CASE WHEN status = "Present" THEN 1 ELSE 0 END) as present,
+            SUM(CASE WHEN status = "Absent" THEN 1 ELSE 0 END) as absent
+        ')
+                ->whereDate('date', today())
+                ->first();
+
+            // Calculate attendance rate
+            $attendanceRate = $todayStats->total > 0
+                ? round(($todayStats->present / $todayStats->total) * 100, 2)
+                : 0;
+
+            // Get recent attendance by class for the last 5 days
+            $recentAttendance = Attendance::selectRaw('
+            class_id,
+            DATE(date) as attendance_date,
+            COUNT(*) as total,
+            SUM(CASE WHEN status = "Present" THEN 1 ELSE 0 END) as present_count,
+            SUM(CASE WHEN status = "Absent" THEN 1 ELSE 0 END) as absent_count
+        ')
+                ->with('classRoom')
+                ->whereDate('date', '>=', now()->subDays(5))
+                ->groupBy('class_id', 'attendance_date')
+                ->orderBy('attendance_date', 'desc')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'class_name' => $item->classRoom->class_name . ($item->classRoom->section ? ' (' . $item->classRoom->section . ')' : ''),
+                        'date' => $item->attendance_date,
+                        'present_count' => $item->present_count,
+                        'absent_count' => $item->absent_count,
+                        'attendance_rate' => $item->total > 0 ? round(($item->present_count / $item->total) * 100, 2) : 0,
+                        'status' => $item->present_count > $item->absent_count ? 'Present' : 'Absent'
+                    ];
+                })
+                ->take(5);
+
+            $totalStudents = Student::count();
+
+            return view('attendance.index', compact(
+                'classes',
+                'attendances',
+                'todayStats',
+                'attendanceRate',
+                'recentAttendance',
+                'totalStudents'
+            ));
         } elseif ($user->isTeacher()) {
+            // Existing teacher logic
             $teacher = $user->teacher;
             $classes = $teacher ? ClassRoom::where('id', $teacher->class_id)->get() : collect();
+
+            return view('attendance.mark', compact('classes')); // Create a separate view for teachers
         } else {
             abort(403, 'Unauthorized');
         }
-
-        return view('attendance.index', compact('classes'));
     }
 
-    public function fetchStudents(Request $request)
+    // Add this method for fetching single attendance record
+    public function show(Attendance $attendance)
     {
-        $request->validate([
-            'class_id' => 'required|exists:classes,id',
+        return response()->json([
+            'status' => $attendance->status,
+            'remarks' => $attendance->remarks
         ]);
-
-        $students = Student::with('user')
-            ->where('class_id', $request->class_id)
-            ->get()
-            ->map(function ($student) {
-                return [
-                    'id' => $student->id,
-                    'roll_number' => $student->roll_number,
-                    'name' => $student->user->name,
-                ];
-            });
-
-        return response()->json($students);
     }
 
-    public function store(Request $request)
+    // Add this method for updating attendance
+    public function update(Request $request, Attendance $attendance)
     {
         $request->validate([
-            'class_id' => 'required|exists:classes,id',
-            'date' => 'required|date',
-            'status' => 'required|array',
-            'status.*' => 'in:Present,Absent',
-            'remarks' => 'nullable|array',
+            'status' => 'required|in:Present,Absent',
+            'remarks' => 'nullable|string|max:500',
         ]);
 
-        $teacherId = auth()->user()->teacher ? auth()->user()->teacher->id : null;
-
-        foreach ($request->status as $studentId => $status) {
-            Attendance::updateOrCreate(
-                [
-                    'class_id' => $request->class_id,
-                    'student_id' => $studentId,
-                    'date' => $request->date,
-                ],
-                [
-                    'teacher_id' => $teacherId,
-                    'status' => $status,
-                    'remarks' => $request->remarks[$studentId] ?? null,
-                ]
-            );
-        }
+        $attendance->update([
+            'status' => $request->status,
+            'remarks' => $request->remarks,
+        ]);
 
         return redirect()->route('attendance.index')
-            ->with('success', 'Attendance marked successfully.');
+            ->with('success', 'Attendance updated successfully.');
     }
 
-    public function report()
+    // Add this method for deleting attendance
+    public function destroy(Attendance $attendance)
     {
-        $user = auth()->user();
-        $reportData = [];
+        $attendance->delete();
 
-        if ($user->isAdmin()) {
-            // Admin sees all classes
-            $classes = ClassRoom::with(['attendances', 'students'])->get();
-
-            foreach ($classes as $class) {
-                $totalStudents = $class->students->count();
-                $presentToday = $class->attendances()->whereDate('date', today())->where('status', 'Present')->count();
-                $absentToday = $class->attendances()->whereDate('date', today())->where('status', 'Absent')->count();
-
-                $reportData[] = [
-                    'class' => $class,
-                    'total_students' => $totalStudents,
-                    'present_today' => $presentToday,
-                    'absent_today' => $absentToday,
-                    'attendance_rate' => $totalStudents > 0 ? round(($presentToday / $totalStudents) * 100, 2) : 0,
-                ];
-            }
-        } elseif ($user->isTeacher()) {
-            // Teacher sees only their class
-            $teacher = $user->teacher;
-
-            if ($teacher && $teacher->classRoom) {
-                $class = $teacher->classRoom;
-                $totalStudents = $class->students->count();
-                $presentToday = $class->attendances()->whereDate('date', today())->where('status', 'Present')->count();
-                $absentToday = $class->attendances()->whereDate('date', today())->where('status', 'Absent')->count();
-
-                $reportData[] = [
-                    'class' => $class,
-                    'total_students' => $totalStudents,
-                    'present_today' => $presentToday,
-                    'absent_today' => $absentToday,
-                    'attendance_rate' => $totalStudents > 0 ? round(($presentToday / $totalStudents) * 100, 2) : 0,
-                ];
-            }
-        }
-
-        return view('attendance.report', compact('reportData'));
-    }
-
-    public function myAttendance()
-    {
-        $user = auth()->user();
-
-        if (!$user->isStudent()) {
-            abort(403, 'Unauthorized');
-        }
-
-        $student = $user->student;
-        $attendances = $student->attendances()->with('classRoom')->latest()->paginate(10);
-
-        $stats = [
-            'total' => $student->attendances()->count(),
-            'present' => $student->attendances()->where('status', 'Present')->count(),
-            'absent' => $student->attendances()->where('status', 'Absent')->count(),
-            'percentage' => $student->attendances()->count() > 0
-                ? round(($student->attendances()->where('status', 'Present')->count() / $student->attendances()->count()) * 100, 1)
-                : 0,
-        ];
-
-        return view('attendance.my', compact('attendances', 'stats'));
+        return redirect()->route('attendance.index')
+            ->with('success', 'Attendance record deleted successfully.');
     }
 }

@@ -13,7 +13,7 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with(['user', 'class'])->paginate(10);
+        $students = Student::with(['user', 'class'])->latest()->paginate(10);
         return view('students.index', compact('students'));
     }
 
@@ -92,6 +92,11 @@ class StudentController extends Controller
 
         return redirect()->route('students.index')
             ->with('success', 'Student updated successfully.');
+    }
+    
+    public function show(Student $student)
+    {
+        return view('students.show', compact('student'));
     }
 
     public function destroy(Student $student)

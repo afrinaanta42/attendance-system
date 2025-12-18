@@ -94,11 +94,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/', [StudentController::class, 'store'])->name('store');
             Route::get('/{student}/edit', [StudentController::class, 'edit'])->name('edit');
             Route::put('/{student}', [StudentController::class, 'update'])->name('update');
+            Route::get('/{student}', [StudentController::class, 'show'])->name('show');
             Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
             Route::get('/{student}/attendance', [StudentController::class, 'attendance'])->name('attendance');
         });
 
         // Attendance Management
+        Route::resource('attendance', AttendanceController::class)->only(['show', 'update', 'destroy']);
         Route::prefix('attendance')->name('attendance.')->group(function () {
             Route::get('/', [AttendanceController::class, 'index'])->name('index');
             Route::post('/store', [AttendanceController::class, 'store'])->name('store');
@@ -116,22 +118,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // These routes are already defined above, but kept for clarity
     });
 
+
     // Student-only routes
     Route::middleware(['role:Student'])->group(function () {
-
-        // Student Attendance
-        Route::get('/attendance', [AttendanceController::class, 'myAttendance'])->name('attendance.my');
         Route::prefix('my')->name('my.')->group(function () {
+            // Student Attendance
             Route::get('/attendance', [AttendanceController::class, 'myAttendance'])->name('attendance');
+            // Student Profile
             Route::get('/profile', [ProfileController::class, 'studentProfile'])->name('profile');
+            // Student Schedule
             Route::get('/schedule', function () {
                 return view('students.my.schedule');
             })->name('schedule');
+            // Student Grades
             Route::get('/grades', function () {
                 return view('students.my.grades');
             })->name('grades');
         });
     });
+
 
     // Common routes for all authenticated users
     Route::prefix('common')->name('common.')->group(function () {
