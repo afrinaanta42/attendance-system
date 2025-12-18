@@ -115,6 +115,11 @@
                                             class="text-primary hover:text-primary/80 transition-colors" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <a href="{{ route('students.show', $student) }}"
+                                            class="text-attendance-blue hover:text-attendance-blue/80 transition-colors"
+                                            title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
                                         <form action="{{ route('students.destroy', $student) }}" method="POST"
                                             class="inline"
                                             onsubmit="return confirm('Are you sure you want to delete this student?');">

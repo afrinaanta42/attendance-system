@@ -9,7 +9,7 @@ class ClassController extends Controller
 {
     public function index()
     {
-        $classes = ClassRoom::with(['teacher.user', 'students'])->paginate(10);
+        $classes = ClassRoom::with(['teacher.user', 'students'])->latest()->paginate(10);
         return view('classes.index', compact('classes'));
     }
 
@@ -34,6 +34,7 @@ class ClassController extends Controller
 
     public function edit(ClassRoom $class)
     {
+        // dd($class);
         return view('classes.edit', compact('class'));
     }
 

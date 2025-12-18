@@ -23,8 +23,8 @@ class TeacherSeeder extends Seeder
         $teachers = [
             [
                 'name' => 'John Smith',
-                'email' => 'teacher.john@attendance.com',
-                'password' => Hash::make('teacher123'),
+                'email' => 'teacher@example.com',
+                'password' => Hash::make('password'),
                 'subject' => 'Mathematics',
                 'class_id' => $classes->where('subject', 'Mathematics')->first()->id ?? null,
             ],
